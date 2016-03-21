@@ -79,6 +79,9 @@ namespace WebApplication1.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Awesome Information")]
+        public string AwesomeInformation { get; set; }
     }
 
     public class ResetPasswordViewModel

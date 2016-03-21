@@ -168,6 +168,10 @@
     <Compile Include="Migrations\201603211905163_InitailMigration.Designer.cs">
       <DependentUpon>201603211905163_InitailMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603212015165_AddAwesomeInformation.cs" />
+    <Compile Include="Migrations\201603212015165_AddAwesomeInformation.Designer.cs">
+      <DependentUpon>201603212015165_AddAwesomeInformation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -231,6 +235,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Account\Information.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -245,6 +250,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201603211905163_InitailMigration.resx">
       <DependentUpon>201603211905163_InitailMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603212015165_AddAwesomeInformation.resx">
+      <DependentUpon>201603212015165_AddAwesomeInformation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
