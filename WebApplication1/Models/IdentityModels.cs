@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -55,6 +55,22 @@ namespace WebApplication1.Models
         {
             return new ApplicationDbContext();
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApplicationUser>().ToTable("Users", "security");
+            modelBuilder.Entity<ApplicationRole>().ToTable("Roles", "security");
+            modelBuilder.Entity<ApplicationIdentityUserRole>().ToTable("UserRoles", "security");
+            modelBuilder.Entity<ApplicationIdentityUserLogin>().ToTable("UserLogins", "security");
+            modelBuilder.Entity<ApplicationIdentityUserClaim>().ToTable("UserClaims", "security");
+
+            modelBuilder.Entity<ApplicationUser>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<ApplicationRole>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<ApplicationIdentityUserClaim>().Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+        }
     }
 
     public class ApplicationUserStore : UserStore
@@ -62,7 +78,6 @@ namespace WebApplication1.Models
                 ApplicationIdentityUserClaim>
     {
         public ApplicationUserStore(ApplicationDbContext context) : base(context) { }
-
     }
 
     public class ApplicationRoleStore : RoleStore<ApplicationRole, int, ApplicationIdentityUserRole>
