@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -6,10 +7,23 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace WebApplication1.Models
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class ApplicationUser : IdentityUser
+
+    public class ApplicationIdentityUserLogin:IdentityUserLogin<int>
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+    }
+
+    public class ApplicationIdentityUserRole:IdentityUserRole<int>
+    {
+    }
+
+    public class ApplicationIdentityUserClaim:IdentityUserClaim<int>
+    {
+    }
+
+    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    public class ApplicationUser : IdentityUser<int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>
+    {
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -18,10 +32,22 @@ namespace WebApplication1.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationRole : IdentityRole<int, ApplicationIdentityUserRole>
+    {
+        public ApplicationRole()
+        {
+        }
+
+        public ApplicationRole(string name)
+        {
+            Name = name;
+        }
+    }
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole, ApplicationIdentityUserClaim>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
         }
 
@@ -29,5 +55,18 @@ namespace WebApplication1.Models
         {
             return new ApplicationDbContext();
         }
+    }
+
+    public class ApplicationUserStore : UserStore
+            <ApplicationUser, ApplicationRole, int, ApplicationIdentityUserLogin, ApplicationIdentityUserRole,
+                ApplicationIdentityUserClaim>
+    {
+        public ApplicationUserStore(ApplicationDbContext context) : base(context) { }
+
+    }
+
+    public class ApplicationRoleStore : RoleStore<ApplicationRole, int, ApplicationIdentityUserRole>
+    {
+        public ApplicationRoleStore(ApplicationDbContext context) : base(context) { }
     }
 }
